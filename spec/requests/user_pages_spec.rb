@@ -32,13 +32,16 @@ describe "User pages" do
 	  		expect { click_button "Submit" }.to change(User, :count).by(1)
 	  	end
 
-	  	describe "after successful submit" do 
+	  	describe "after creating a user" do 
 	  		before { click_button "Submit" }
 	  		let(:user) { User.find_by_email('user@example.com') }
 
 	  		it { should have_selector('title', text: user.name)}
 	  		it { should have_selector('div', class: "alert-success", 
 	  			                               text: "Welcome to Flashcard") }
+        it { should have_link('Profile', href: user_path(user)) }
+        it { should have_link('Sign out', href: signout_path) }
+        it { should_not have_link('Sign in', href: signin_path) }
 	  	end
 	  end
   end
