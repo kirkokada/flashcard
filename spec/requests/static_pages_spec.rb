@@ -15,6 +15,17 @@ describe "StaticPages" do
 
 		it_should_behave_like "all static pages"
 		it { should_not have_selector('title', text: "Flashcard |") }
+		it { should have_link('Sign up now!', href: signup_path) }
+
+		describe "after signing in" do
+			let(:user) { FactoryGirl.create(:user) } 
+			before do 
+				sign_in user
+				visit root_path
+			end
+
+			it { should have_link('Create Deck') }
+		end
 	end
 
 	describe "Help page" do 

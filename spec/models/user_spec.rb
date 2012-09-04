@@ -1,15 +1,13 @@
 require 'spec_helper'
 
 describe User do
-  before { @user = User.new(name: "Example User", 
-                            email: "user@example.com", 
-                            password: "password", 
-                            password_confirmation: "password") }
+  before { @user = FactoryGirl.create(:user) }
 
   subject { @user }
 
   it { should respond_to(:admin) }
   it { should respond_to(:name) }
+  it { should respond_to(:decks) }
   it { should respond_to(:email) }
   it { should respond_to(:password) }
   it { should respond_to(:password_confirmation) }
@@ -81,13 +79,10 @@ describe User do
   end
 
   describe "when email is already taken" do 
-    before do 
-      user_with_same_email = @user.dup
-      user_with_same_email.email = @user.email.upcase
-      user_with_same_email.save
-    end
+    let(:user_with_same_email) { @user.dup }
+    before { user_with_same_email.email = @user.email.upcase }
 
-    it { should_not be_valid }
+    specify { user_with_same_email.should_not be_valid }
   end
 
   #password
@@ -132,5 +127,22 @@ describe User do
   describe "remember token" do 
     before { @user.save }
     its(:remember_token) { should_not be_blank }
+  end
+
+  describe "deck relations" do 
+    let(:older_deck) { FactoryGirl.create(:deck, user: @user, updated_at: 1.day.ago) }
+    let(:recent_deck) { FactoryGirl.create(:deck, user: @user, updated_at: 1.hour.ago) }
+
+    it "should have the right decks in the right order" do 
+      @user.decks.should == [recent_deck, older_deck]
+    end
+
+    it "should destroy associated decks" do 
+      decks = @user.decks
+      @user.destroy
+      decks.each do |deck|
+        Deck.find_by_id(deck.id).should be_nil
+      end
+    end
   end
 end

@@ -96,6 +96,19 @@ describe "AuthenticationPages" do
         end
       end
 
+      describe "in the decks controller" do 
+        
+        describe "submitting to the create action" do 
+          before { post decks_path }
+          specify { response.should redirect_to signin_path }
+        end
+
+        describe "submitting to the destroy action" do 
+          before { delete deck_path(FactoryGirl.create(:deck)) }
+          specify { response.should redirect_to signin_path }
+        end
+      end
+
       describe "as wrong user" do 
         let(:user) { FactoryGirl.create(:user)}
         let(:wrong_user) { FactoryGirl.create(:user, email: "wrong@example.com") }

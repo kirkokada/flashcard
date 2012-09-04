@@ -9,4 +9,10 @@ FactoryGirl.define do
 			admin true
 		end
 	end
+
+	factory :deck do 
+		sequence(:title) { |n| "Deck #{n}" }
+		sequence(:description) { |n| "This is deck number #{n}." }
+		user
+	end
 end

@@ -1,0 +1,23 @@
+<%= link_to 'Create Deck', '#deck-form-modal', data: { toggle: "modal" }, class: "btn btn-primary btn-large" %>
+<div id="deck-form-modal" class="modal hide fade">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" >&times;</button>
+		<h3>Create a Deck</h3>
+	</div>
+	<div class="modal-body">
+		<%= form_for @deck, remote: true do |f| %>
+			<div id="error-messages">
+				<%= render 'shared/error_messages', object: f.object %>
+			</div>
+
+			<%= f.label :title %>
+			<%= f.text_field :title, placeholder: "Create new deck..." %>
+			
+			<%= f.label :description %>
+			<%= f.text_area :description, rows: 5 %>
+		
+
+			<%= f.submit "Save", class: "btn btn-primary" %>
+		<% end %>
+	</div>
+</div>

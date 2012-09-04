@@ -1,7 +1,25 @@
-<div class="center hero-unit">
+<% if signed_in? %>
+	<div class="row">
+		<aside class="span3">
+			<section>
+				<%= render 'shared/user_info' %>
+			</section>
+			<section>
+				<div id="#deck-form">
+					<%= render 'shared/deck_form' %>
+				</div>
+			</section>
+		</aside>
+		<section class="span9" id="active-area">
+			<%= render partial: 'shared/deck_list', locals: { user: current_user, decks: @decks }  %>
+		</section>
+	</div>
+<% else %>
+	<div class="center hero-unit">
 
-	<h1>Flashcard</h1>
-	<h2>Spaced repetition for remembering shiz</h2>
+		<h1>Flashcard</h1>
+		<h2>Spaced repetition for remembering shiz</h2>
 
-	<%= link_to "Sign up now!", signup_path, class: "btn btn-large btn-primary" %>
-</div>
+		<%= link_to "Sign up now!", signup_path, class: "btn btn-large btn-primary" %>
+	</div>
+<% end %>

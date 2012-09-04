@@ -26,6 +26,7 @@ section {
 
 textarea {
 	resize: vertical;
+	overflow: auto;
 }
 
 .center {
@@ -151,6 +152,7 @@ input, textarea, select, .uneditable-input {
 	@include box_sizing;
 }
 
+
 /* users index */
 
 .users {
@@ -162,6 +164,32 @@ input, textarea, select, .uneditable-input {
 		border-top: 1px solid $grayLighter;
 		&:last-child {
 			border-bottom: 1px solid $grayLighter;
+		}
+	}
+}
+
+/* decks */
+
+#deck-accordion {
+	.accordion-heading {
+		&:hover {
+			background: $grayLighter;
+		}
+		a {
+			&:hover {
+				text-decoration: none;
+			}
+		}
+		.actions {
+			padding-top: 8px;
+			padding-right: 20px;
+			ul {
+				list-style: none;
+				float: right;
+				li {
+					display: inline;
+				}
+			}
 		}
 	}
 }

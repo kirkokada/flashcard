@@ -1,0 +1,6 @@
+<% if user.decks.any? %>
+	<div class="accordion" id="deck-accordion">
+			<%= render decks %>
+	</div>
+	<%= will_paginate decks %>
+<% end %>

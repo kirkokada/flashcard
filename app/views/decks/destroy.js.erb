@@ -1,0 +1,11 @@
+var destroyed_deck = "#deck<%= params[:id].to_s %>" 
+
+$(destroyed_deck).hide('slow', function() {
+	$(this).remove();
+});
+$("#flash-alert").html("<%=j render 'layouts/alert' %>").show('slow');
+<% unless @last_deck === @next_deck %>
+	$("<%=j render @next_deck %>").hide().appendTo('#deck-accordion')
+		.show('slow');
+<% end %>
+$("#deck-count").html("<%=j pluralize(current_user.decks.count, 'decks') %>");

@@ -1,9 +1,13 @@
 <% provide(:title, @user.name) %>
 
 <div class="row">
-	<aside class="span4">
+	<aside class="span3">
 		<section>
 			<h1><%= @user.name %></h1>
 		</section>
 	</aside>
+	<div class="span9">
+		<h3>Decks (<%= @user.decks.count %>)</h3>
+		<%= render partial: 'shared/deck_list', locals: { user: @user, decks: @decks } %>
+	</div>
 </div>

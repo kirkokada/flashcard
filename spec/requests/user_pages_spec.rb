@@ -46,12 +46,12 @@ describe "User pages" do
         describe "following sign in" do
           before { sign_in user }
 
-          describe "revisiting signup page" do 
+          describe "when revisiting signup page" do 
             before { visit signup_path }
             it { should have_selector('title', text: user.name) }
           end
 
-          describe "submitting POST request to Users#create action" do 
+          describe "when submitting POST request to Users#create action" do 
             before { post users_path }
             specify { response.should redirect_to user_path(user) }
           end
@@ -61,11 +61,22 @@ describe "User pages" do
   end
 
   describe "profile page" do 
-  	let(:user) { FactoryGirl.create(:user) }
+  	let(:user)  { FactoryGirl.create(:user) }
+    let!(:deck1) { FactoryGirl.create(:deck, user: user) }
+    let!(:deck2) { FactoryGirl.create(:deck, user: user) }
+
   	before { visit user_path(user) }
 
   	it { should have_selector('title', text: user.name) }
   	it { should have_selector('h1',    text: user.name) }
+
+    describe "decks" do 
+      it { should have_selector('h4', text: deck1.title) }
+      it { should have_selector('h4', text: deck2.title) }
+      it { should have_content(user.decks.count) }
+      it { should have_link('Delete', href: deck_path(deck1)) }
+      it { should have_link('Delete', href: deck_path(deck2)) }
+    end
   end
 
   describe "edit" do 
