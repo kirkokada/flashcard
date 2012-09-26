@@ -1,0 +1,7 @@
+<li>
+	<h4><%= card.front_text %></h4>
+	<span class="pull-right">
+		<%= link_to "Delete", card, method: :delete, data: { confirm: "Are you sure?" }, class: "delete_card"%> | 
+		<%= link_to "Edit", edit_card_path(card) %>
+	</span>
+</li>

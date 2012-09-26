@@ -72,4 +72,48 @@ describe "Deck pages" do
 			it { should     have_selector('div', id:"deck10") }
 		end
 	end
+
+	describe "edit page" do
+		let(:deck) { FactoryGirl.create(:deck, user: user) } 
+		before do 
+			visit edit_deck_path(deck)
+		end
+
+		it { should have_selector('title', text: deck.title) }
+		it { should have_selector('h1', text: "Edit Deck") }
+		it { should have_link("New card", href: new_card_path) }
+
+		describe "with invalid information" do 
+			before { click_button "Save Changes" }
+			it { should have_selector('div', class: "alert-error") }
+		end
+
+		describe "with valid information" do
+			let(:new_title)       { "New Title" }
+			let(:new_description) { "New Description" } 
+			before do 
+				fill_in "Title",       with: new_title
+				fill_in "Description", with: new_description
+				click_button "Save Changes"
+			end
+
+			it { should have_link(new_title) }
+			it { should have_content(new_description) }
+			specify { deck.reload.title.should == new_title }
+			specify { deck.reload.description.should == new_description }
+		end
+
+		describe "after creating a new card" do 
+			before do 
+				click_link "New card"
+				fill_in "Front", with: "Front"
+				fill_in "Back", with: "Back"
+				click_button "Save card"
+			end
+
+			it { should have_selector('title', text: deck.title) }
+			it { should have_selector('div',   class: "alert-success") }
+			it { should have_content("Front") }
+		end
+	end
 end

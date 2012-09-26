@@ -1,7 +1,8 @@
 Flashcard::Application.routes.draw do
   resources :users
   resources :sessions, only: [:new, :create, :destroy]
-  resources :decks,    only: [:create, :destroy]
+  resources :decks,    only: [:create, :destroy, :edit, :update]
+  resources :cards 
   
   root to: 'static_pages#home'
 
@@ -9,8 +10,8 @@ Flashcard::Application.routes.draw do
   match '/about',   to: 'static_pages#about'
   match '/contact', to: 'static_pages#contact' 
 
-  match '/signup',  to: 'users#new'
-  match '/signin' => 'sessions#new'
+  match '/signup'  => 'users#new'
+  match '/signin'  => 'sessions#new'
   match '/signout' => 'sessions#destroy', via: :delete
 
 

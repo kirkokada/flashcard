@@ -10,7 +10,7 @@
 		<div class="actions span3 pull-right">
 			<ul>
 				<li><%= link_to "Review", '#', data: { remote: true } %> |</li>
-				<li><%= link_to "Edit", '#', data: { remote: true } %> |</li>
+				<li><%= link_to "Edit",   edit_deck_path(deck) %> |</li>
 				<li><%= link_to "Delete", deck_path(deck), method: :delete, data: { confirm: "Are you sure?", remote: true } %></li>
 			</ul>
 		</div>

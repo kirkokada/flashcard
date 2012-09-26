@@ -1,0 +1,20 @@
+<% provide(:title, @deck.title) %>
+
+<h1>Edit Deck</h1>
+<div class="row">
+	<aside class="span3">
+		<%= form_for @deck do |f| %>
+			<%= render 'form', f:f %>
+			<%= f.submit 'Save Changes', class:"btn btn-large btn-primary" %>
+		<% end %> 
+	</aside>
+	<div class="span9">
+		<% if @cards.any? %>
+			<ul class="cards">
+				<%= render @cards %>
+			</ul>
+			<%= will_paginate @cards %>
+		<% end %>
+		<%= link_to "New card", new_card_path, class: "btn btn-large btn-primary" %>
+	</div>
+</div>

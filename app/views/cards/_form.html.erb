@@ -1,0 +1,9 @@
+<div id="error-messages">
+	<%= render 'shared/error_messages', object: f.object %>
+</div>
+
+<%= f.label     :front_text %>
+<%= f.text_area :front_text, rows: 6 %>
+
+<%= f.label     :back_text %>
+<%= f.text_area :back_text, rows: 6 %>

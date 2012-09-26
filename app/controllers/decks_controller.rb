@@ -25,12 +25,29 @@ class DecksController < ApplicationController
 		end
 	end
 
+	def edit
+		@deck = current_user.decks.find(params[:id])
+		@cards = @deck.cards.paginate(page: 1, per_page: 10, order: "next_review DESC")
+		session[:deck_id] = @deck.id #Saves deck to be passed to Card controller
+	end
+
+	def update
+		@deck = current_user.decks.find(params[:id])
+		if @deck.update_attributes(params[:deck])
+			redirect_to root_path
+			flash[:success] = "Deck updated!"
+			session[:deck_id] = nil
+		else
+			render 'edit'
+		end
+	end
+
 	def destroy
 		# For some reason, paginate returns an ActiveRecord::Relation instead of a WillPaginate::Collection
 		# so the next_page method does not work. @last_deck and @next_deck is a work around to this.
 		# last deck shown on the page BEFORE the target deck is destroyed
 		@last_deck = current_user.decks.paginate(page: params[:page], per_page: 10).last 
-		Deck.find(params[:id]).destroy
+		current_user.decks.find(params[:id]).destroy
 		respond_to do |format|
 			format.html do 
 				flash[:success] = "Deck destroyed."

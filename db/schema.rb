@@ -11,17 +11,19 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120822072045) do
+ActiveRecord::Schema.define(:version => 20120907051302) do
 
   create_table "cards", :force => true do |t|
     t.integer  "deck_id"
     t.string   "front_text"
     t.string   "back_text"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+    t.time     "next_review"
   end
 
   add_index "cards", ["deck_id", "updated_at"], :name => "index_cards_on_deck_id_and_updated_at"
+  add_index "cards", ["next_review", "deck_id"], :name => "index_cards_on_next_review_and_deck_id"
 
   create_table "decks", :force => true do |t|
     t.string   "title"

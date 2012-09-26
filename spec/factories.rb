@@ -15,4 +15,11 @@ FactoryGirl.define do
 		sequence(:description) { |n| "This is deck number #{n}." }
 		user
 	end
+
+	factory :card do 
+		sequence(:front_text) { |n| "Front text #{n}" }
+		sequence(:back_text)  { |n| "Back text #{n}" }
+		next_review Time.now
+		deck
+	end
 end

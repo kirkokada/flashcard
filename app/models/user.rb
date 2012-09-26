@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
   before_save :create_remember_token
   has_secure_password
   has_many :decks, dependent: :destroy
+  has_many :cards, through: :decks
 
   VALID_EMAIL_REGEX = /\A[\w+\.-]+@[a-z\d\.-]+\.[a-z]+\z/i
 
