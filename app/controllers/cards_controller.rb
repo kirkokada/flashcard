@@ -24,6 +24,7 @@ class CardsController < ApplicationController
 		@card = current_deck.cards.find(params[:id])
 		if @card.update_attributes(params[:card])
 			@card.next_review = Time.now
+			@card.save
 			redirect_to edit_deck_path(current_deck)
 			flash[:success] = "Card updated."
 		else

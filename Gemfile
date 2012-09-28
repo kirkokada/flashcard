@@ -34,6 +34,7 @@ group :test do
   gem 'factory_girl_rails', '1.4.0'
   gem 'cucumber-rails', '1.2.1', require: false
   gem 'database_cleaner'
+  gem 'timecop' #for manipulating time when testing
 end
 
 group :production do

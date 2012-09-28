@@ -19,7 +19,7 @@ ActiveRecord::Schema.define(:version => 20120907051302) do
     t.string   "back_text"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
-    t.time     "next_review"
+    t.datetime "next_review"
   end
 
   add_index "cards", ["deck_id", "updated_at"], :name => "index_cards_on_deck_id_and_updated_at"

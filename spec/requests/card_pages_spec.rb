@@ -53,7 +53,7 @@ describe "Card Pages" do
 	end
 
 	describe "edit" do 
-		let!(:card) { FactoryGirl.create(:card, deck: deck, next_review: Time.now) }
+		let!(:card) { FactoryGirl.create(:card, deck: deck) }
 		before do 
 			visit edit_deck_path(deck)
 			click_link "Edit"
@@ -74,18 +74,17 @@ describe "Card Pages" do
 
 		describe "with valid information" do 
 			before do 
+				Timecop.freeze
 				fill_in "Front text", with: "New Front"
 				fill_in "Back text",  with: "New Back"
 				click_button "Save changes"
 			end
 
-			let(:time_now) { Time.now }
-
 			it { should have_selector('div', class: "alert alert-success", text: "Card updated.") }
 			it { should have_selector('h4',  text: "New Front") }
 			specify { card.reload.front_text.should == "New Front" }
 			specify { card.reload.back_text.should == "New Back" }
-			specify { card.reload.next_review.should be_within(1.second).of(time_now) }
+			specify { card.reload.next_review.to_i.should == DateTime.now.to_i }
 		end
 	end
 end

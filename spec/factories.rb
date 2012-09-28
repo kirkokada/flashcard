@@ -1,7 +1,7 @@
 FactoryGirl.define do 
 	factory :user do 
-		sequence(:name)     { |n| "Michael Oldmoney #{n}"}
-		sequence(:email)    { |n| "michaeloldmoney#{n}@example.com" }
+		sequence(:name)     { |n| "Example User #{n}"}
+		sequence(:email)    { |n| "user#{n}@example.com" }
 		password "password"
 		password_confirmation "password"
 
@@ -19,7 +19,7 @@ FactoryGirl.define do
 	factory :card do 
 		sequence(:front_text) { |n| "Front text #{n}" }
 		sequence(:back_text)  { |n| "Back text #{n}" }
-		next_review Time.now
+		next_review DateTime.now
 		deck
 	end
 end

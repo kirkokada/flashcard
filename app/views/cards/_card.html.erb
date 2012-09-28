@@ -1,7 +1,22 @@
-<li>
-	<h4><%= card.front_text %></h4>
-	<span class="pull-right">
-		<%= link_to "Delete", card, method: :delete, data: { confirm: "Are you sure?" }, class: "delete_card"%> | 
-		<%= link_to "Edit", edit_card_path(card) %>
-	</span>
-</li>
+<div class="accordion-group" id="card<%= card.id.to_s %>">
+	<div class="accordion-heading row">
+		<h4>
+			<%= link_to card.front_text, 
+			            "#card#{card.id}-inner",
+									class: "accordion-toggle span4",
+									data: { parent: "#card-accordion",
+									        toggle: "collapse" } %>
+		</h4>
+		<div class="actions span3 pull-right">
+			<ul>
+				<li><%= link_to "Edit",   edit_card_path(card) %> |</li>
+				<li><%= link_to "Delete", card_path(card), method: :delete, data: { confirm: "Are you sure?", remote: true } %></li>
+			</ul>
+		</div>
+	</div>
+	<div id="card<%= card.id.to_s %>-inner" class="accordion-body collapse">
+		<div class="accordion-inner">
+			<i>Next review on <%= card.next_review.to_s(:long_ordinal) %></i>
+		</div>
+	</div>
+</div>
