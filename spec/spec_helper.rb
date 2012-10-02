@@ -1,6 +1,14 @@
 require 'rubygems'
 require 'spork'
 
+def select_driver(example)
+   if example.metadata[:js]
+    Capybara.current_driver = :selenium
+  else
+    Capybara.use_default_driver
+  end
+end
+
 Spork.prefork do
   # Loading more in this block will cause your tests to run faster. However, 
   # if you change any configuration or code from libraries loaded here, you'll

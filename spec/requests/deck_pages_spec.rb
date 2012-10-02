@@ -4,13 +4,15 @@ describe "Deck pages" do
   
 	subject { page }
 
-	let(:user) { FactoryGirl.create(:user) }
+	let!(:user) { FactoryGirl.create(:user) }
 	before do 
 		sign_in user
 	end
 
+	let(:title) { "Example Deck" }
+	let(:description) { "Deck description"}
+
 	describe "deck creation" do
-		let(:deck_title) { "Example Deck" }
 
 		before do 
 			visit root_path
@@ -30,7 +32,8 @@ describe "Deck pages" do
 
 			describe "followed by valid submit" do 
 				before do 
-					fill_in "deck_title", with: deck_title
+					fill_in "Title", with: title
+					fill_in "Description", with: description
 					click_button "Save"
 				end
 
@@ -39,7 +42,10 @@ describe "Deck pages" do
 		end
 
 		describe "with valid information" do 
-			before { fill_in 'deck_title', with: deck_title }
+			before do
+			 fill_in 'Title', with: title
+			 fill_in 'Description', with: description
+			end
 			
 			it "should create a deck" do 
 				expect { click_button "Save" }.should change(Deck, :count).by(1)
@@ -48,12 +54,15 @@ describe "Deck pages" do
 
 			describe "after successful submit" do 
 				before { click_button "Save" }
-				it { should have_selector('h4', text: deck_title) }
+
+				it { should have_selector('h4', text: title) }
+				it { should have_content(description) }
 			end
 		end
 	end
 
-	describe "deck list", js: true do 
+	describe "deck list", type: :request do
+	  self.use_transactional_fixtures = false
 		before do 
 			20.times do 
 				FactoryGirl.create(:deck, user: user)
@@ -61,15 +70,30 @@ describe "Deck pages" do
 			visit root_path
 		end
 
-		describe "when deleting a deck" do 
-			before do 
-				within "div#deck20" do 
-					click_link "Delete"
-				end
+		describe "deck deletion", js: :true do
+
+			it "should delete a deck" do
+				expect do
+					within "div#deck20" do 
+						click_link "Delete"
+						page.driver.wait_until(page.driver.browser.switch_to.alert.accept)
+						page.driver.wait_until { page.has_content "Deck destroyed." }
+					end
+				end.should change(Deck, :count).by(-1)
 			end
 
-			it { should_not have_selector('div', id:"deck20") }
-			it { should     have_selector('div', id:"deck10") }
+		describe "after successful delete" do
+				before do 
+					within "div#deck20" do 
+						click_link "Delete"
+						page.driver.wait_until(page.driver.browser.switch_to.alert.accept)
+						page.driver.wait_until { page.has_content "Deck destroyed." }
+					end
+				end
+
+				it { should have_selector('div', id:"deck20", class: "hidden") }
+				it { should have_selector('div', id:"deck10") }
+			end
 		end
 	end
 

@@ -1,15 +1,11 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.7'
+gem 'rails'
 gem 'bootstrap-sass'
-gem 'bcrypt-ruby', '3.0.1'
+gem 'bcrypt-ruby'
 gem 'faker', '1.0.1'
 gem 'will_paginate', '3.0.3'
 gem 'bootstrap-will_paginate', '0.0.6'
-
-group :development, :test do
-  gem 'sqlite3', '1.3.5'
-end
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -19,7 +15,7 @@ group :assets do
   gem 'uglifier', '1.2.3'
 end
 
-gem 'jquery-rails', '2.0.0'
+gem 'jquery-rails'
 
 group :test, :development do
   gem 'rspec-rails', '2.10.0'
@@ -35,8 +31,10 @@ group :test do
   gem 'cucumber-rails', '1.2.1', require: false
   gem 'database_cleaner'
   gem 'timecop' #for manipulating time when testing
+  gem 'rb-fsevent', require: false
+  gem 'growl'
 end
 
-group :production do
+group :development, :test, :production do
   gem 'pg', '0.12.2'
 end

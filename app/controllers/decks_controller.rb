@@ -45,8 +45,7 @@ class DecksController < ApplicationController
 	def destroy
 		# For some reason, paginate returns an ActiveRecord::Relation instead of a WillPaginate::Collection
 		# so the next_page method does not work. @last_deck and @next_deck is a work around to this.
-		# last deck shown on the page BEFORE the target deck is destroyed
-		@last_deck = current_user.decks.paginate(page: params[:page], per_page: 10).last 
+		@last_deck = current_user.decks.paginate(page: params[:page], per_page: 10).last  # last deck shown on the page BEFORE the target deck is destroyed
 		current_user.decks.find(params[:id]).destroy
 		respond_to do |format|
 			format.html do 
