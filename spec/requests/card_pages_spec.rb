@@ -6,14 +6,15 @@ describe "Card Pages" do
 
 	let!(:user) { FactoryGirl.create(:user) }
 	let!(:deck) { FactoryGirl.create(:deck, user: user) }
+	let!(:card) { FactoryGirl.create(:card, deck: deck) }
 	
 	before do 
 		sign_in user
+		visit edit_deck_path(deck)
 	end
 
 	describe "card creation" do 
 		before do 
-			visit edit_deck_path(deck)
 			click_link "New card"
 		end
 
@@ -53,9 +54,7 @@ describe "Card Pages" do
 	end
 
 	describe "edit" do 
-		let!(:card) { FactoryGirl.create(:card, deck: deck) }
 		before do 
-			visit edit_deck_path(deck)
 			click_link "Edit"
 		end
 
@@ -85,6 +84,20 @@ describe "Card Pages" do
 			specify { card.reload.front_text.should == "New Front" }
 			specify { card.reload.back_text.should == "New Back" }
 			specify { card.reload.next_review.to_i.should == DateTime.now.to_i }
+		end
+	end
+
+	describe "card deletion" do
+
+		it "should delete a card" do
+			expect { click_link "Delete" }.should change(Card, :count).by(-1)
+		end
+
+		describe "after deletion" do
+			before { click_link "Delete" }
+
+			it { should     have_selector('title',  text: deck.title) }
+			it { should_not have_selector('h4', text: card.front_text) }
 		end
 	end
 end

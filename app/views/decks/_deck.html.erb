@@ -1,7 +1,7 @@
 <div class="accordion-group" id="deck<%= deck.id.to_s %>">
 	<div class="accordion-heading row">
 		<h4>
-			<%= link_to deck.title, 
+			<%= link_to truncate(deck.title, length: 30, separator: ' '), 
 			            "#deck#{deck.id}-inner",
 									class: "accordion-toggle span4",
 									data: { parent: "#deck-accordion",

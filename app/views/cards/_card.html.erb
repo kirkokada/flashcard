@@ -1,7 +1,7 @@
 <div class="accordion-group" id="card<%= card.id.to_s %>">
 	<div class="accordion-heading row">
 		<h4>
-			<%= link_to card.front_text, 
+			<%= link_to truncate(card.front_text, length: 20, separator: ' '), 
 			            "#card#{card.id}-inner",
 									class: "accordion-toggle span4",
 									data: { parent: "#card-accordion",
@@ -10,7 +10,7 @@
 		<div class="actions span3 pull-right">
 			<ul>
 				<li><%= link_to "Edit",   edit_card_path(card) %> |</li>
-				<li><%= link_to "Delete", card_path(card), method: :delete, data: { confirm: "Are you sure?", remote: true } %></li>
+				<li><%= link_to "Delete", card_path(card), method: :delete, data: { confirm: "Are you sure?" } %></li>
 			</ul>
 		</div>
 	</div>

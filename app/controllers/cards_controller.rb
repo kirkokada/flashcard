@@ -31,4 +31,10 @@ class CardsController < ApplicationController
 			render 'edit'
 		end
 	end
+
+	def destroy
+		current_deck.cards.find(params[:id]).destroy
+		flash[:success] = "Card destroyed."
+		redirect_to edit_deck_path(current_deck)
+	end
 end
