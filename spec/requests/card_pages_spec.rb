@@ -100,4 +100,8 @@ describe "Card Pages" do
 			it { should_not have_selector('h4', text: card.front_text) }
 		end
 	end
+
+	describe "card display" do
+		
+	end
 end

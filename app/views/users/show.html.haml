@@ -1,0 +1,9 @@
+- provide(:title, @user.name)
+.row
+  %aside.span3
+    %section
+      %h1= @user.name
+  .span9
+    %h3
+      Decks (#{@user.decks.count})
+    = render partial: 'shared/deck_list', locals: { user: @user, decks: @decks }

@@ -1,0 +1,14 @@
+#new-deck.accordion-group
+  .accordion-heading.row.pagination-centered
+    %h4
+      = link_to '+Deck', '#deck-form-modal', class: "accordion-toggle", data: { parent: "#deck-accordion", toggle: "modal" }
+  #new-deck-inner.accordion-body.collapse
+    .accordion-inner
+      #deck-form-modal.modal.hide.fade
+        .modal-header
+          %button.close{"data-dismiss" => "modal", :type => "button"} &times;
+          %h3 Create a Deck
+        .modal-body
+          = form_for deck, remote: true do |f|
+          = render 'decks/form', f:f
+          = f.submit "Save", class: "btn btn-primary"

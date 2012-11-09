@@ -70,19 +70,17 @@ describe "Deck pages" do
 			visit root_path
 		end
 
-		describe "deck deletion", js: :true do
+		describe "deck deletion" do
 
 			it "should delete a deck" do
 				expect do
 					within "div#deck20" do 
 						click_link "Delete"
-						page.driver.wait_until(page.driver.browser.switch_to.alert.accept)
-						page.driver.wait_until { page.has_content "Deck destroyed." }
 					end
 				end.should change(Deck, :count).by(-1)
 			end
 
-		describe "after successful delete" do
+		describe "after successful delete", js: :true do
 				before do 
 					within "div#deck20" do 
 						click_link "Delete"
@@ -138,6 +136,54 @@ describe "Deck pages" do
 			it { should have_selector('title', text: deck.title) }
 			it { should have_selector('div',   class: "alert-success") }
 			it { should have_content("Front") }
+		end
+	end
+
+	describe "review page" do
+
+		describe "for a deck containing no cards" do
+			let!(:empty_deck) { FactoryGirl.create(:deck, user: user) }
+
+			before do
+				visit root_path 
+				click_link 'Review'
+			end
+
+			it { should have_content('This deck has no cards') }
+		end
+
+		describe "for a deck with cards" do
+			let!(:review_deck) { FactoryGirl.create(:deck, user: user) }
+
+			describe "not up for review" do
+				let!(:card) { FactoryGirl.create(:card, deck: review_deck) }
+
+				before do
+					visit root_path 
+					click_link 'Review'
+				end
+
+				it { should have_content('No cards up for review.') }
+			end
+
+			describe "up for review" do
+
+				let!(:card) do
+					Timecop.travel(Time.now - 1.day) do
+						FactoryGirl.create(:card, deck: review_deck)
+					end
+				end
+
+				before do
+					visit root_path
+					click_link 'Review'
+				end
+
+				it { should have_selector('title', text: "Reviewing: #{review_deck.title}") }
+				it { should have_content('Ready?') }
+				it { should have_link('Yes!', href: card_path(card)) }
+				it { should have_link('Not yet...', href: root_path) }
+			end
 		end
 	end
 end

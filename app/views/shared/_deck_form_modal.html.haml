@@ -1,0 +1,9 @@
+= link_to 'Create Deck', '#deck-form-modal', data: { toggle: "modal" }, class: "btn btn-primary btn-large"
+#deck-form-modal.modal.hide.fade
+  .modal-header
+    %button.close{"data-dismiss" => "modal", :type => "button"} &times;
+    %h3 Create a Deck
+  .modal-body
+    = form_for @deck, remote: true do |f|
+      = render('decks/form', f:f)
+      = f.submit "Save", class: "btn btn-primary"

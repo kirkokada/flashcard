@@ -1,0 +1,18 @@
+.accordion-group{:id => "card#{card.id.to_s}"}
+  .accordion-heading.row
+    %h4
+      = link_to truncate(card.front_text, length: 20, separator: ' '), |
+        "#card#{card.id}-inner",                                       |
+        class: "accordion-toggle span4",                               |
+        data: { parent: "#card-accordion",                             |
+        toggle: "collapse" }                                           |
+    .actions.span3.pull-right
+      %ul
+        %li
+          = link_to "Edit",   edit_card_path(card)
+          |
+        %li= link_to "Delete", card_path(card), method: :delete, data: { confirm: "Are you sure?" }
+  .accordion-body.collapse{:id => "card#{card.id.to_s}-inner"}
+    .accordion-inner
+      %i
+        Next review on #{card.next_review.to_s(:long_ordinal)}

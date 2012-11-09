@@ -1,0 +1,17 @@
+.accordion-group{:id => "deck#{deck.id.to_s}"}
+  .accordion-heading.row
+    %h4
+      = link_to truncate(deck.title, length: 30, separator: ' '), "#deck#{deck.id}-inner", class: "accordion-toggle span4",data: { parent: "#deck-accordion", toggle: "collapse" }
+    .actions.span3.pull-right
+      %ul
+        %li
+          = link_to "Review", deck_path(deck)
+          |
+        %li
+          = link_to "Edit",   edit_deck_path(deck)
+          |
+        %li
+          = link_to "Delete", deck_path(deck), method: :delete, data: { confirm: "Are you sure?", remote: true }
+  .accordion-body.collapse{:id => "deck#{deck.id.to_s}-inner"}
+    .accordion-inner
+      %i= deck.description

@@ -1,0 +1,9 @@
+- provide(:title, "Reviewing: #{@deck.title}")
+.center.hero-unit
+	%h1
+		Reviewing: |
+		= @deck.title
+	%h1 
+		Ready?
+	= link_to "Yes!", card_path(@cards.first) , class: "btn btn-large btn-primary"
+	= link_to "Not yet...", root_path, class: "btn btn-large btn-danger"

@@ -11,7 +11,8 @@ describe Card do
   it { should respond_to(:front_text) }
   it { should respond_to(:back_text) }
   it { should respond_to(:next_review) }
-  its(:deck_id) { should == deck.id } 
+  it { should respond_to(:e_factor) }
+  its(:deck_id) { should == deck.id }
 
   describe "accessible attributes" do 
   	it "should not allow access to deck_id" do 
@@ -34,5 +35,14 @@ describe Card do
   describe "with blank back text" do 
   	before { @card.back_text = ""}
   	it { should_not be_valid }
+  end
+
+  describe "after save" do
+    before do 
+      Timecop.freeze
+      @card.save
+    end
+    specify { @card.e_factor.should == 2.5 }
+    specify { @card.next_review.to_i.should == DateTime.now.to_i }
   end
 end

@@ -28,7 +28,7 @@ class DecksController < ApplicationController
 	def edit
 		@deck = current_user.decks.find(params[:id])
 		@cards = @deck.cards.paginate(page: 1, per_page: 10, order: "next_review DESC")
-		session[:deck_id] = @deck.id #Saves deck to be passed to Card controller
+		session[:deck_id] = @deck.id
 	end
 
 	def update
@@ -39,6 +39,25 @@ class DecksController < ApplicationController
 			session[:deck_id] = nil
 		else
 			render 'edit'
+		end
+	end
+
+	def show
+		@deck = current_user.decks.find(params[:id])
+		if @deck.cards.empty? 
+			flash[:alert] = "This deck has no cards"
+			redirect_to root_path
+		else
+			@cards = @deck.cards.find(:all, conditions: ['next_review < ?', DateTime.now])
+			unless @cards.empty?
+				session[:card_ids] = []
+				@cards.each do |card|
+					session[:card_ids] << card.id
+				end
+			else
+				flash[:alert] = "No cards up for review."
+				redirect_to root_path
+			end
 		end
 	end
 

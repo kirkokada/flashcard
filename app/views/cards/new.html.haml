@@ -1,0 +1,7 @@
+- provide(:title, "New Card")
+%h1 New card
+.row
+  .span6.offset3
+    = form_for @card do |f|
+      = render 'form', f:f
+      = f.submit "Save card", class: "btn btn-large btn-primary"

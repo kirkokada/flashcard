@@ -1,0 +1,15 @@
+- if signed_in?
+  .row
+    %aside.span3
+      %section
+        = render 'shared/user_info'
+      %section
+        %div{:id => "#deck-form"}
+          = render 'shared/deck_form_modal'
+    %section#active-area.span9
+      = render partial: 'shared/deck_list', locals: { user: current_user, decks: @decks }
+- else
+  .center.hero-unit
+    %h1 Flashcard
+    %h2 Spaced repetition for remembering shiz
+    = link_to "Sign up now!", signup_path, class: "btn btn-large btn-primary"

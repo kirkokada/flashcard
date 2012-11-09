@@ -7,7 +7,6 @@ class CardsController < ApplicationController
 
 	def create
 		@card = current_deck.cards.build(params[:card])
-		@card.next_review = Time.now
 		if @card.save
 			redirect_to edit_deck_path(current_deck)
 			flash[:success] = "Card created."
@@ -17,24 +16,30 @@ class CardsController < ApplicationController
 	end
 
 	def edit
-		@card = current_deck.cards.find(params[:id])
+		@card = Card.find(params[:id])
 	end
 
 	def update
-		@card = current_deck.cards.find(params[:id])
+		@card = Card.find(params[:id])
 		if @card.update_attributes(params[:card])
 			@card.next_review = Time.now
 			@card.save
-			redirect_to edit_deck_path(current_deck)
+			redirect_to edit_deck_path(@card.deck_id)
 			flash[:success] = "Card updated."
 		else
 			render 'edit'
 		end
 	end
 
+	def show
+		@card = Card.find(params[:id])
+	end
+
 	def destroy
-		current_deck.cards.find(params[:id]).destroy
+		@card = Card.find(params[:id])
+		@deck = Deck.find(@card.deck_id)
+		@card.destroy
 		flash[:success] = "Card destroyed."
-		redirect_to edit_deck_path(current_deck)
+		redirect_to edit_deck_path(@deck)
 	end
 end
